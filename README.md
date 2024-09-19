@@ -9,17 +9,16 @@ This main repository contains information and links to the sub-repositories that
 
 - [MID-3K RGB Modality](https://github.com/kennedyk1/MID-3K-rgb): Contains RGB images.
 - [MID-3K Thermal Modality](https://github.com/kennedyk1/MID-3K-thermal): Contains thermal images.
-- [MID-3K Intensity Modality](https://github.com/kennedyk1/MID-3K-intensity): Contains intensity data captured by LiDAR.
 - [MID-3K Depth Modality](https://github.com/kennedyk1/MID-3K-depth): Contains depth data captured by LiDAR.
+- [MID-3K Intensity Modality](https://github.com/kennedyk1/MID-3K-intensity): Contains intensity data captured by LiDAR.
 
-## How to Clone the Repositories
-
-You can clone any of these repositories to your local environment using the `git clone` command. Simply open the terminal and follow these steps:
-
-1. Clone the main repository:
+You can clone any of these modalities to your local environment using the `git clone` command. Simply open the terminal and follow these steps:
 
    ```bash
-   git clone https://github.com/kennedyk1/MID-3K
+   git clone https://github.com/kennedyk1/MID-3K-rgb
+   git clone https://github.com/kennedyk1/MID-3K-thermal
+   git clone https://github.com/kennedyk1/MID-3K-depth
+   git clone https://github.com/kennedyk1/MID-3K-intensity
    ```
 
 <table>
