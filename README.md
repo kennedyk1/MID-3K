@@ -20,6 +20,8 @@ You can clone any of these modalities to your local environment using the `git c
    git clone https://github.com/kennedyk1/MID-3K-depth
    git clone https://github.com/kennedyk1/MID-3K-intensity
    ```
+This dataset includes a [metainfo.csv](https://github.com/kennedyk1/MID-3K/raw/main/metainfo.csv) file that provides detailed information about each image, including the collection date and time, department, floor, and the number of thermal and RGB annotations. This file can be useful for splitting the dataset into training, validation, and test sets for CNN training, allowing for organized and efficient dataset management.
+
 
 <table>
 <tr>
