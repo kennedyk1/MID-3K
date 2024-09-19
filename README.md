@@ -5,6 +5,23 @@
 
 This dataset, collected by the [ISR (Institute of Systems and Robotics)](https://www.isr.uc.pt/) Team, is a new multi-sensory dataset that was organized, calibrated, curated, and annotated. The sensory data was collected using ROS and a Jackal Clearpath mobile robot (see Fig. 1), operating in two indoor environments: three floors of the [DEEC](https://www.uc.pt/fctuc/deec/) building and two floors of [DEI](https://www.uc.pt/fctuc/dei/) building at the [University of Coimbra](https://www.uc.pt/), Polo 2, Portugal.
 
+This main repository contains information and links to the sub-repositories that store the different modalities of the MID-3K dataset. Each sub-repository is categorized according to modality:
+
+- [MID-3K RGB Modality](https://github.com/kennedyk1/MID-3K-rgb): Contains RGB images.
+- [MID-3K Thermal Modality](https://github.com/kennedyk1/MID-3K-thermal): Contains thermal images.
+- [MID-3K Intensity Modality](https://github.com/kennedyk1/MID-3K-intensity): Contains intensity data captured by LiDAR.
+- [MID-3K Depth Modality](https://github.com/kennedyk1/MID-3K-depth): Contains depth data captured by LiDAR.
+
+## How to Clone the Repositories
+
+You can clone any of these repositories to your local environment using the `git clone` command. Simply open the terminal and follow these steps:
+
+1. Clone the main repository:
+
+   ```bash
+   git clone https://github.com/kennedyk1/MID-3K
+   ```
+
 <table>
 <tr>
 <td align="center">
@@ -13,6 +30,16 @@ This dataset, collected by the [ISR (Institute of Systems and Robotics)](https:/
 </tr>
 <tr><td><em>Fig. 1: Sensors on mobile robot, Clearpath Jackal model: (RGB) Ximea MQ013CG-E2, (Thermal) Flir Boson 640 LWIR, and (LiDAR) Ouster OS1-64-U.</em></td></tr>
 </table>
+
+<table>
+<tr>
+<td align="center">
+<img src="img_files/calib.png" alt="Sensors Calibration"/>
+</td>
+</tr>
+<tr><td><em>Fig. 2: Sample images used for sensors calibration. The composite image shows the <i>RGB</i> (left) and <i>thermal</i> (center) images, and the projection of 3D-LiDAR points over the RGB image (right). The first two images are used for sensor calibrations, while the last one is used to verify if the LiDAR-camera calibration is properly aligned.</em></td></tr>
+</table>
+
 
 The dataset consists of 3083 selected frames, containing RGB, thermal, depth-map and intensity-map images  (last two generated from LiDAR) totaling 12332 image files (see Fig. 2). The sensors have been calibrated, but a small temporal misalignment is present due to hardware limitations.
 
