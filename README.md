@@ -9,8 +9,8 @@ This main repository provides information about the Dataset, which consists of 3
 
 - [MID-3K RGB Modality](https://github.com/kennedyk1/MID-3K-rgb): Contains RGB images.
 - [MID-3K Thermal Modality](https://github.com/kennedyk1/MID-3K-thermal): Contains thermal images.
-- [MID-3K Depth Modality](https://github.com/kennedyk1/MID-3K-depth): Contains depth data captured by LiDAR.
-- [MID-3K Intensity Modality](https://github.com/kennedyk1/MID-3K-intensity): Contains intensity data captured by LiDAR.
+- [MID-3K Depth Modality](https://github.com/kennedyk1/MID-3K-depth): Contains depth images data captured by LiDAR.
+- [MID-3K Intensity Modality](https://github.com/kennedyk1/MID-3K-intensity): Contains intensity images data captured by LiDAR.
 
 You can clone any of these modalities to your local environment using the `git clone` command. Simply open the terminal and follow these steps:
 
