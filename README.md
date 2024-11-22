@@ -196,9 +196,6 @@ The depth and intensity images representation was generated from the `projected`
       <td><b>10881</b></td>
       <td><b>10824</b></td>
     </tr>
-    <tr align="center">
-      <td colspan="6" align="center"><em>Fig. 2: Dataset frame-examples composed of RGB, Thermal, Depth-Map and Intensity-Map modalities.</em></td>
-    </tr>
   </tbody>
 </table>
 
