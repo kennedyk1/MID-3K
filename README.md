@@ -144,13 +144,14 @@ The depth and intensity images representation was generated from the `projected`
 
 <table style="text-align: center;">
   <thead>
-    <tr><td colspan="6" align="center"><b>Daily Distribution of Images in the Dataset</b></td></tr>
+    <tr><td colspan="7" align="center"><b>Daily Distribution of Images in the Dataset</b></td></tr>
     <tr align="center">
       <td><b>Day</b></td>
       <td><b>Date</b></td>
       <td><b>Images</b></td>
       <td><b>Thermal Annotations</b></td>
       <td><b>RGB Annotations</b></td>
+      <td><b>Folder</b></td>
     </tr>
   </thead>
   <tbody>
@@ -160,6 +161,7 @@ The depth and intensity images representation was generated from the `projected`
       <td>368 (11.9%)</td>
       <td>1368 (12.6%)</td>
       <td>1404 (13.0%)</td>
+      <td><b>Test</b></td>
     </tr>
     <tr align="center">
       <td>#2</td>
@@ -167,6 +169,7 @@ The depth and intensity images representation was generated from the `projected`
       <td>332 (10.8%)</td>
       <td>1075 (9.9%)</td>
       <td>1072 (9.9%)</td>
+      <td><b>Train</b></td>
     </tr>
     <tr align="center">
       <td>#3</td>
@@ -174,6 +177,7 @@ The depth and intensity images representation was generated from the `projected`
       <td>337 (10.9%)</td>
       <td>1658 (15.2%)</td>
       <td>1651 (15.3%)</td>
+      <td><b>Test</b></td>
     </tr>
     <tr align="center">
       <td>#4</td>
@@ -181,6 +185,7 @@ The depth and intensity images representation was generated from the `projected`
       <td>1333 (43.2%)</td>
       <td>4199 (38.6%)</td>
       <td>4125 (38.1%)</td>
+      <td><b>Train</b></td>
     </tr>
     <tr align="center">
       <td>#5</td>
@@ -188,6 +193,7 @@ The depth and intensity images representation was generated from the `projected`
       <td>713 (23.1%)</td>
       <td>2581 (23.7%)</td>
       <td>2572 (23.8%)</td>
+      <td><b>Train</b></td>
     </tr>
     <tr align="center">
       <td><b>-</b></td>
@@ -195,6 +201,7 @@ The depth and intensity images representation was generated from the `projected`
       <td><b>3083</b></td>
       <td><b>10881</b></td>
       <td><b>10824</b></td>
+       <td><b></b></td>
     </tr>
   </tbody>
 </table>
