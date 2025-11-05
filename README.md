@@ -46,10 +46,10 @@ The dataset consists of 3083 selected frames, containing RGB, thermal, depth-map
 
 <table>
     <tr>
-        <td><img src="img_files/r.png" alt="RGB Modality"/></td>
-        <td><img src="img_files/t.png" alt="Thermal Modality"/></td>
-        <td><img src="img_files/d.png" alt="Depth Modality"/></td>
-        <td><img src="img_files/i.png" alt="Intensity Modality"/></td>
+        <td><img src="https://github.com/kennedyk1/MID-3K-rgb/raw/main/images/000395_1715246208729896974.png" alt="RGB Modality"/></td>
+        <td><img src="https://github.com/kennedyk1/MID-3K-thermal/raw/main/images/000395_1715246208729896974.png" alt="Thermal Modality"/></td>
+        <td><img src="https://github.com/kennedyk1/MID-3K-depth/raw/main/images/000395_1715246208729896974.png" alt="Depth Modality"/></td>
+        <td><img src="https://github.com/kennedyk1/MID-3K-intensity/raw/main/images/000395_1715246208729896974.png" alt="Intensity Modality"/></td>
     </tr>
     <tr>
         <td colspan="4" align="center"><em>Fig. 2: Dataset frame-examples composed of RGB, Thermal, Depth-Map and Intensity-Map modalities.</em></td>
