@@ -114,7 +114,7 @@
     .matrix-link { display: inline-block; margin-top: 14px; font-weight: 750; }
 
     .table-wrap { overflow-x: auto; margin-top: 28px; border: 1px solid var(--line); background: var(--panel); }
-    table { width: 100%; border-collapse: collapse; min-width: 640px; }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
     th, td { padding: 14px 16px; border-bottom: 1px solid var(--line); text-align: left; }
     th { color: var(--muted); background: #f0f4f0; font-size: .79rem; letter-spacing: .05em; text-transform: uppercase; }
     tr:last-child td { border-bottom: 0; }
@@ -308,20 +308,17 @@ T_thermal_from_color =
 
       <section id="summary">
         <p class="section-label">Dataset statistics</p>
-        <h2>Frames, annotations, and repository sizes.</h2>
+        <h2>Data files and repository sizes.</h2>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Metric</th><th>RGB</th><th>Thermal</th><th>Depth</th><th>Intensity</th></tr></thead>
+            <thead><tr><th>Metric</th><th>RGB</th><th>Thermal</th><th>Depth</th><th>Intensity</th><th>LiDAR point clouds</th></tr></thead>
             <tbody>
-              <tr><td>Images</td><td>3,083</td><td>3,083</td><td>3,083</td><td>3,083</td></tr>
-              <tr><td>Annotation files</td><td>3,083</td><td>3,083</td><td>3,083</td><td>3,083</td></tr>
-              <tr><td>Person annotations</td><td>10,824</td><td>10,881</td><td>10,824¹</td><td>10,824¹</td></tr>
-              <tr><td>Approx. repository size</td><td>1.3 GB</td><td>1.3 GB</td><td>977 MB</td><td>1.7 GB</td></tr>
-              <tr><td>Annotation format</td><td>YOLO xywhn</td><td>YOLO xywhn</td><td>YOLO xywhn</td><td>YOLO xywhn</td></tr>
+              <tr><td>Data files</td><td>3,083</td><td>3,083</td><td>3,083</td><td>3,083</td><td>3,083</td></tr>
+              <tr><td>Approx. repository size</td><td>1.3 GB</td><td>1.3 GB</td><td>977 MB</td><td>1.7 GB</td><td>6.5 GB</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="section-intro">¹ LiDAR-derived modalities use the RGB labels because the LiDAR is calibrated to the RGB camera. A small temporal misalignment may be present due to hardware limitations.</p>
+        <p class="section-intro">Each column refers to the data files stored in its dedicated repository.</p>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Day</th><th>Date</th><th>Images</th><th>Thermal annotations</th><th>RGB annotations</th><th>Split</th></tr></thead>
