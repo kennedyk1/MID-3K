@@ -1,218 +1,171 @@
-# MID-3K (Multimodal ISR Dataset with 3000 images)
+# MID-3K — Multimodal ISR Dataset
 
-[https://github.com/kennedyk1/MID-3K](https://github.com/kennedyk1/MID-3K)
+[Dataset website](https://kennedyk1.github.io/MID-3K/) · [Main repository](https://github.com/kennedyk1/MID-3K) · [Metadata CSV](metainfo.csv)
 
+MID-3K is a calibrated and annotated multimodal dataset collected by the [Institute of Systems and Robotics (ISR)](https://www.isr.uc.pt/) at the University of Coimbra. A Clearpath Jackal robot recorded 3,083 scenes across three DEEC floors and two DEI floors. Each scene has RGB, thermal, depth, and intensity representations.
 
-This dataset, collected by the [ISR (Institute of Systems and Robotics)](https://www.isr.uc.pt/) Team, is a new multi-sensory dataset that was organized, calibrated, curated, and annotated. The sensory data was collected using ROS and a Jackal Clearpath mobile robot (see Fig. 1), operating in two indoor environments: three floors of the [DEEC](https://www.uc.pt/fctuc/deec/) building and two floors of [DEI](https://www.uc.pt/fctuc/dei/) building at the [University of Coimbra](https://www.uc.pt/), Polo 2, Portugal.
+## Dataset access
 
-This main repository provides information about the Dataset, which consists of 3,083 scenes, each containing 4 images from different modalities (RGB, thermal, depth, and intensity). The images are organized by modality into separate repositories, with the links listed below:
+The modality data and raw point clouds are maintained in dedicated repositories:
 
-- [MID-3K RGB Modality](https://github.com/kennedyk1/MID-3K-rgb): Contains RGB images.
-- [MID-3K Thermal Modality](https://github.com/kennedyk1/MID-3K-thermal): Contains thermal images.
-- [MID-3K Depth Modality](https://github.com/kennedyk1/MID-3K-depth): Contains depth images data captured by LiDAR.
-- [MID-3K Intensity Modality](https://github.com/kennedyk1/MID-3K-intensity): Contains intensity images data captured by LiDAR.
+| Data | Repository | Contents |
+| --- | --- | --- |
+| RGB | [MID-3K-rgb](https://github.com/kennedyk1/MID-3K-rgb) | RGB images and labels |
+| Thermal | [MID-3K-thermal](https://github.com/kennedyk1/MID-3K-thermal) | Thermal images and labels |
+| Depth | [MID-3K-depth](https://github.com/kennedyk1/MID-3K-depth) | LiDAR-derived depth images and labels |
+| Intensity | [MID-3K-intensity](https://github.com/kennedyk1/MID-3K-intensity) | LiDAR-derived intensity images and labels |
+| Raw LiDAR point clouds | [MID-3K-pcd / `pcd/`](https://github.com/kennedyk1/MID-3K-pcd/tree/main/pcd) | Source point clouds for projection and derived modalities |
 
-You can clone any of these modalities to your local environment using the `git clone` command. Simply open the terminal and follow these steps:
+To obtain the raw point clouds:
 
-   ```bash
-   git clone https://github.com/kennedyk1/MID-3K-rgb
-   git clone https://github.com/kennedyk1/MID-3K-thermal
-   git clone https://github.com/kennedyk1/MID-3K-depth
-   git clone https://github.com/kennedyk1/MID-3K-intensity
-   ```
-This dataset includes a [metainfo.csv](https://github.com/kennedyk1/MID-3K/raw/main/metainfo.csv) file that provides detailed information about each image, including the collection date and time, department, floor, and the number of thermal and RGB annotations. This file can be useful for splitting the dataset into training, validation, and test sets for CNN training, allowing for organized and efficient dataset management.
+```bash
+git clone https://github.com/kennedyk1/MID-3K-pcd.git
+```
 
+`metainfo.csv` records the collection time, department, floor, and RGB/thermal annotation counts for every scene. Use it to make reproducible dataset splits and to associate modalities.
 
-<table>
-<tr>
-<td align="center">
-<img src="img_files/jackal.png" alt="Jackal Clearpath"/>
-</td>
-</tr>
-<tr><td><em>Fig. 1: Sensors on mobile robot, Clearpath Jackal model: (RGB) Ximea MQ013CG-E2, (Thermal) Flir Boson 640 LWIR, and (LiDAR) Ouster OS1-64-U.</em></td></tr>
-</table>
+## Sensors and derived modalities
 
-<table>
-<tr>
-<td align="center">
-<img src="img_files/calib.png" alt="Sensors Calibration"/>
-</td>
-</tr>
-<tr><td><em>Fig. 2: Sample images used for sensors calibration. The composite image shows the <i>RGB</i> (left) and <i>thermal</i> (center) images, and the projection of 3D-LiDAR points over the RGB image (right). The first two images are used for sensor calibrations, while the last one is used to verify if the LiDAR-camera calibration is properly aligned.</em></td></tr>
-</table>
+<p align="center">
+  <img src="img_files/jackal.png" alt="Sensor installation on the Clearpath Jackal robot" width="300">
+</p>
 
+| Modality | Sensor | Representation | Resolution | Labels |
+| --- | --- | --- | --- | --- |
+| RGB | Ximea MQ013CG-E2 | Colour image | 640 × 512 | YOLO `xywhn` |
+| Thermal | FLIR Boson 640 LWIR | Thermal image | 640 × 512 | YOLO `xywhn` |
+| Depth | Ouster OS1-64-U | LiDAR-derived depth image | 640 × 512 | YOLO `xywhn` |
+| Intensity | Ouster OS1-64-U | LiDAR-derived intensity image | 640 × 512 | YOLO `xywhn` |
 
-The dataset consists of 3083 selected frames, containing RGB, thermal, depth-map and intensity-map images  (last two generated from LiDAR) totaling 12332 image files (see Fig. 2). The sensors have been calibrated, but a small temporal misalignment is present due to hardware limitations.
+The depth and intensity images are generated by projecting LiDAR points onto the RGB image plane using the COLOR–LiDAR calibration, then producing dense representations from the projected clouds. The RGB labels are used for the LiDAR-derived modalities because the LiDAR is calibrated to the RGB camera. A small temporal misalignment between sensors may be present because of hardware limitations.
 
-<table>
-    <tr>
-        <td><img src="https://github.com/kennedyk1/MID-3K-rgb/raw/main/images/000395_1715246208729896974.png" alt="RGB Modality"/></td>
-        <td><img src="https://github.com/kennedyk1/MID-3K-thermal/raw/main/images/000395_1715246208729896974.png" alt="Thermal Modality"/></td>
-        <td><img src="https://github.com/kennedyk1/MID-3K-depth/raw/main/images/000395_1715246208729896974.png" alt="Depth Modality"/></td>
-        <td><img src="https://github.com/kennedyk1/MID-3K-intensity/raw/main/images/000395_1715246208729896974.png" alt="Intensity Modality"/></td>
-    </tr>
-    <tr>
-        <td colspan="4" align="center"><em>Fig. 2: Dataset frame-examples composed of RGB, Thermal, Depth-Map and Intensity-Map modalities.</em></td>
-    </tr>
-</table>
+## Calibration
 
-The depth and intensity images representation was generated from the `projected` LiDAR point clouds using a modified bilateral filter. In particular, each LiDAR point cloud is projected on the RGB image-plane, considering the Camera-LiDAR calibration matrix, and then a sliding-window based weighing function, dependent on the range dispersion, is used to interpolate the points inside the mask therefore generating a dense representation.
+The canonical calibration files are versioned in [`calibration/`](calibration/). They contain only the matrices required for use: camera intrinsics `K`, OpenCV radial-tangential distortion coefficients `D`, and homogeneous extrinsics `T`.
 
-<table>
-  <tr>
-    <th></th>
-    <th>RGB</th>
-    <th>Thermal</th>
-    <th>Depth</th>
-    <th>Intensity</th>
-  </tr>
-  <tr>
-    <td>Model</td>
-    <td align="center"><em>Ximea MQ013CG-E2</em></td>
-    <td align="center"><em>FLIR BOSON 640 LWIR</em></td>
-    <td align="center"><em>OUSTER OS1-64-U</em></td>
-    <td align="center"><em>OUSTER OS1-64-U</em></td>
-  </tr>
-  <tr>
-    <td>Type</td>
-    <td align="center"><em>Colour Camera</em></td>
-    <td align="center"><em>Thermal Camera</em></td>
-    <td align="center"><em>LiDAR</em></td>
-    <td align="center"><em>LiDAR</em></td>
-  </tr>
-  <tr>
-    <td>Spec.</td>
-    <td align="center"><em>1280x1024 pixels, 1.3 MP</em></td>
-    <td align="center"><em>640x512 pixels</em></td>
-    <td align="center"><em>Vert. Res.: 64 channels<BR>Hor. Res.: 2048 points</em></td>
-    <td align="center"><em>Vert. Res.: 64 channels<BR>Hor. Res.: 2048 points</em></td>
-  </tr>
-  <tr>
-    <td>Image Type</td>
-    <td align="center"><em>.png</em></td>
-    <td align="center"><em>.png</em></td>
-    <td align="center"><em>.png</em></td>
-    <td align="center"><em>.png</em></td>
-  </tr>
-  <tr>
-    <td>Total Images</td>
-    <td align="center"><em>3,083</em></td>
-    <td align="center"><em>3,083</em></td>
-    <td align="center"><em>3,083</em></td>
-    <td align="center"><em>3,083</em></td>
-  </tr>
-  <tr>
-    <td>Total Files Annotations</td>
-    <td align="center"><em>3,083 txt files</em></td>
-    <td align="center"><em>3,083 txt files</em></td>
-    <td align="center"><em>3,083 txt files</em></td>
-    <td align="center"><em>3,083 txt files</em></td>
-  </tr>
-  <tr>
-    <td>Total Annotations (people)</td>
-    <td align="center"><em>10,824</em></td>
-    <td align="center"><em>10,881</em></td>
-    <td align="center"><em>10,824¹</em></td>
-    <td align="center"><em>10,824¹</em></td>
-  </tr>
-  <tr>
-    <td>Dataset Size</td>
-    <td align="center"><em>~1.3 GB</em></td>
-    <td align="center"><em>~1.3 GB</em></td>
-    <td align="center"><em>~977 MB</em></td>
-    <td align="center"><em>~1.7 GB</em></td>
-  </tr>
-  <tr>
-    <td>Images Resolution</td>
-    <td align="center"><em>640x512</em></td>
-    <td align="center"><em>640x512</em></td>
-    <td align="center"><em>640x512</em></td>
-    <td align="center"><em>640x512</em></td>
-  </tr>
-  <tr>
-    <td>Annotation Format</td>
-    <td align="center"><em>YOLO xywhn²</em></td>
-    <td align="center"><em>YOLO xywhn²</em></td>
-    <td align="center"><em>YOLO xywhn²</em></td>
-    <td align="center"><em>YOLO xywhn²</em></td>
-  </tr>
-  <tr>
-    <td colspan="5" align="center"><em>¹ The labels from the RGB modality were used because the LiDAR was calibrated with the RGB camera.<BR>² YOLO normalized xywh format <b>class x_center y_center width height</b></em></td>
-  </tr>
-</table>
+For every transform below, points are column homogeneous vectors and the stated equation gives the exact direction. Do not invert a matrix unless the destination frame changes.
 
+### COLOR camera from LiDAR
 
-<table style="text-align: center;">
-  <thead>
-    <tr><td colspan="7" align="center"><b>Daily Distribution of Images in the Dataset</b></td></tr>
-    <tr align="center">
-      <td><b>Day</b></td>
-      <td><b>Date</b></td>
-      <td><b>Images</b></td>
-      <td><b>Thermal Annotations</b></td>
-      <td><b>RGB Annotations</b></td>
-      <td><b>Folder</b></td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr align="center">
-      <td>#1</td>
-      <td>29-Apr</td>
-      <td>368 (11.9%)</td>
-      <td>1368 (12.6%)</td>
-      <td>1404 (13.0%)</td>
-      <td><b>Test</b></td>
-    </tr>
-    <tr align="center">
-      <td>#2</td>
-      <td>07-May</td>
-      <td>332 (10.8%)</td>
-      <td>1075 (9.9%)</td>
-      <td>1072 (9.9%)</td>
-      <td><b>Train</b></td>
-    </tr>
-    <tr align="center">
-      <td>#3</td>
-      <td>08-May</td>
-      <td>337 (10.9%)</td>
-      <td>1658 (15.2%)</td>
-      <td>1651 (15.3%)</td>
-      <td><b>Test</b></td>
-    </tr>
-    <tr align="center">
-      <td>#4</td>
-      <td>09-May</td>
-      <td>1333 (43.2%)</td>
-      <td>4199 (38.6%)</td>
-      <td>4125 (38.1%)</td>
-      <td><b>Train</b></td>
-    </tr>
-    <tr align="center">
-      <td>#5</td>
-      <td>16-May</td>
-      <td>713 (23.1%)</td>
-      <td>2581 (23.7%)</td>
-      <td>2572 (23.8%)</td>
-      <td><b>Train</b></td>
-    </tr>
-    <tr align="center">
-      <td><b>-</b></td>
-      <td><b>-</b></td>
-      <td><b>3083</b></td>
-      <td><b>10881</b></td>
-      <td><b>10824</b></td>
-       <td><b></b></td>
-    </tr>
-  </tbody>
-</table>
+File: [`calibration/color_lidar/calibration.yaml`](calibration/color_lidar/calibration.yaml)<br>
+Convention: `p_color = T_color_from_lidar × p_lidar_h`<br>
+Translation unit: metres
 
-## Visit our datasets through the links below.
-- MID-1K - [Multimodal ISR Dataset with 1100 images](https://kennedyk1.github.io/MID-1K/) (*RGB, thermal and depth*)
-- MID-3K - [Multimodal ISR Dataset with 3000 images](https://kennedyk1.github.io/MID-3K/) (*RGB, thermal, depth and intensity*)
+```text
+K_color =
+[[681.1537743213527,   0.0,               304.2411111909714],
+ [  0.0,             699.3400141294942, 283.30909783571593],
+ [  0.0,               0.0,               1.0]]
 
+D_color = [-0.019676053622695044, 0.007583580084736622,
+           -0.0006813210784568897, -0.0014894295933110943,
+           -0.028837736877494857]
+
+T_color_from_lidar =
+[[-0.020711213611204426, -0.9997756359099763,  0.004441111522331731, -0.026308843328480876],
+ [-0.028370516356301556, -0.0038525674496390216, -0.999590051734071,  -0.24229990018544303],
+ [ 0.999382889303408,    -0.02082871971218364,  -0.028284359683814708, -0.12754424641116704],
+ [ 0.0,                   0.0,                   0.0,                  1.0]]
+```
+
+### THERMAL camera from LiDAR
+
+File: [`calibration/thermal_lidar/calibration.yaml`](calibration/thermal_lidar/calibration.yaml)<br>
+Convention: `p_thermal = T_thermal_from_lidar × p_lidar_h`<br>
+Translation unit: metres
+
+```text
+K_thermal =
+[[707.2820029925454,   0.0,               354.45491526689966],
+ [  0.0,             703.7786568007459, 227.1052281742882],
+ [  0.0,               0.0,               1.0]]
+
+D_thermal = [-0.12429506535239071, 0.7476399506397287,
+             -0.00795472864117167, 0.02219946671789782,
+             -1.1615169504885268]
+
+T_thermal_from_lidar =
+[[-0.07141160958328907, -0.9974028109990063, -0.009381611162468106, -0.08459234939344676],
+ [ 0.020450563863161964, 0.007939566254821173, -0.9997593399040408,   -0.1531295681987805],
+ [ 0.9972372618662031,  -0.07158628289669194,   0.01983047267798277,  -0.08319853666931896],
+ [ 0.0,                  0.0,                    0.0,                   1.0]]
+```
+
+### THERMAL camera from COLOR camera
+
+File: [`calibration/color_thermal/calibration.yaml`](calibration/color_thermal/calibration.yaml)<br>
+Convention: `p_thermal = T_thermal_from_color × p_color_h`<br>
+Translation unit: millimetres
+
+```text
+K_color =
+[[694.5767783863788,   0.0,              306.0005310511457],
+ [  0.0,             713.418983871438, 286.06474899454673],
+ [  0.0,               0.0,               1.0]]
+
+D_color = [-0.009937498982803262, -0.004021254951108735,
+            0.000006275579508020951, -0.000992441470247646,
+           -0.04372114079253327]
+
+K_thermal =
+[[707.2820015296844,   0.0,               354.4549139181772],
+ [  0.0,             703.7786553036885, 227.10522697281073],
+ [  0.0,               0.0,               1.0]]
+
+D_thermal = [-0.12429506339571258, 0.7476399197335876,
+             -0.007954728400070676, 0.022199465982827807,
+             -1.1615168961926972]
+
+T_thermal_from_color =
+[[ 0.9983917175807383,  0.011889988456163505, -0.055431096333156286, -13.602106271762803],
+ [-0.009109137461417548, 0.9986999976148243,   0.05015314924168618,   31.499143889039583],
+ [ 0.05595535614123418, -0.049567559337354364, 0.9972021135058056,     0.16229630951639198],
+ [ 0.0,                  0.0,                  0.0,                    1.0]]
+```
+
+`D` follows OpenCV's `[k1, k2, p1, p2, k3]` coefficient order. The COLOR and THERMAL intrinsics in the stereo result are the intrinsics estimated for that stereo calibration; use each `K`, `D`, and `T` from the same calibration block.
+
+<p align="center">
+  <img src="img_files/calib.png" alt="RGB, thermal, and projected LiDAR calibration examples" width="100%">
+</p>
+
+## Dataset summary
+
+| Metric | RGB | Thermal | Depth | Intensity |
+| --- | ---: | ---: | ---: | ---: |
+| Images | 3,083 | 3,083 | 3,083 | 3,083 |
+| Annotation files | 3,083 | 3,083 | 3,083 | 3,083 |
+| Person annotations | 10,824 | 10,881 | 10,824¹ | 10,824¹ |
+| Approx. repository size | 1.3 GB | 1.3 GB | 977 MB | 1.7 GB |
+| Annotation format | YOLO `xywhn` | YOLO `xywhn` | YOLO `xywhn` | YOLO `xywhn` |
+
+¹ The LiDAR-derived modality labels use the RGB labels.
+
+<p align="center">
+  <img src="img_files/r.png" alt="RGB sample" width="24%">
+  <img src="img_files/t.png" alt="Thermal sample" width="24%">
+  <img src="img_files/d.png" alt="Depth sample" width="24%">
+  <img src="img_files/i.png" alt="Intensity sample" width="24%">
+</p>
+
+## Collection distribution
+
+| Day | Date | Images | Thermal annotations | RGB annotations | Split |
+| --- | --- | ---: | ---: | ---: | --- |
+| 1 | 29-Apr | 368 | 1,368 | 1,404 | Test |
+| 2 | 07-May | 332 | 1,075 | 1,072 | Train |
+| 3 | 08-May | 337 | 1,658 | 1,651 | Test |
+| 4 | 09-May | 1,333 | 4,199 | 4,125 | Train |
+| 5 | 16-May | 713 | 2,581 | 2,572 | Train |
+| **Total** | — | **3,083** | **10,881** | **10,824** | — |
+
+## Related datasets
+
+- [MID-1K — Multimodal ISR Dataset with 1100 images](https://kennedyk1.github.io/MID-1K/)
+- [MID-3K dataset website](https://kennedyk1.github.io/MID-3K/)
 
 ## References
 
-- Sousa, E., Mota, K. O., Gomes, I. P., Garrote, L., Wolf, D. F., & Premebida, C. (2023, September). **Late-Fusion Multimodal Human Detection Based on RGB and Thermal Images for Robotic Perception**. In *2023 European Conference on Mobile Robots (ECMR)* (pp. 1-6).
-- Kennedy O. S. Mota, Luís Garrote, Cristiano Premebida. **Multimodal Human Detection using RGB, Thermal and LiDAR modalities for Robotic Perception**. *In 2024 IEEE 20th International Conference on Automation Science and Engineering (CASE), Bari, Italy.*
-- Kennedy O. S. Mota, Diogo S. de Oliveira, Luís Garrote, Cristiano Premebida. **Multimodal Human Detection Using YOLO and Representation Learning for Robot Perception**. *In Seventh Iberian Robotics Conference (ROBOT 2024), Madrid, Spain.* [[Preview Document](https://github.com/kennedyk1/MID-3K/blob/main/Multimodal%20Human%20Detection%20Using%20YOLO%20and%20Representation%20Learning%20for%20Robot%20Perception.pdf)]
+- Sousa, E., Mota, K. O., Gomes, I. P., Garrote, L., Wolf, D. F., & Premebida, C. (2023). **Late-Fusion Multimodal Human Detection Based on RGB and Thermal Images for Robotic Perception**. *2023 European Conference on Mobile Robots (ECMR)*, 1–6.
+- Kennedy O. S. Mota, Luís Garrote, Cristiano Premebida. **Multimodal Human Detection using RGB, Thermal and LiDAR modalities for Robotic Perception**. *2024 IEEE 20th International Conference on Automation Science and Engineering (CASE)*, Bari, Italy.
+- Kennedy O. S. Mota, Diogo S. de Oliveira, Luís Garrote, Cristiano Premebida. **Multimodal Human Detection Using YOLO and Representation Learning for Robot Perception**. *Seventh Iberian Robotics Conference (ROBOT 2024)*. [Preview document](https://github.com/kennedyk1/MID-3K/blob/main/Multimodal%20Human%20Detection%20Using%20YOLO%20and%20Representation%20Learning%20for%20Robot%20Perception.pdf)

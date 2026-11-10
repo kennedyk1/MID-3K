@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MID-3K multimodal ISR dataset: modalities, raw LiDAR point clouds, and calibrated sensor transforms.">
+  <title>MID-3K — Multimodal ISR Dataset</title>
+  <style>
+    :root {
+      --ink: #11211f;
+      --muted: #526560;
+      --paper: #f7f8f4;
+      --panel: #ffffff;
+      --line: #d9e1db;
+      --accent: #087e72;
+      --accent-dark: #02574f;
+      --warm: #f2c94c;
+      --code: #11211f;
+      --shadow: 0 18px 40px rgba(17, 33, 31, .09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--accent-dark); text-underline-offset: 3px; }
+    a:hover { color: var(--accent); }
+    code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(217, 225, 219, .75);
+      background: rgba(247, 248, 244, .92);
+      backdrop-filter: blur(12px);
+    }
+    .nav { min-height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 800; text-decoration: none; letter-spacing: -.03em; }
+    .mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: white; font-size: .8rem; }
+    nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 18px; }
+    nav a { color: var(--muted); font-size: .9rem; font-weight: 650; text-decoration: none; }
+    nav a:hover { color: var(--accent-dark); }
+
+    .hero { overflow: hidden; position: relative; color: white; background: var(--ink); padding: 80px 0 76px; }
+    .hero::after { content: ""; position: absolute; width: 660px; height: 660px; right: -180px; top: -380px; border: 70px solid rgba(8, 126, 114, .6); border-radius: 50%; }
+    .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(260px, .7fr); align-items: center; gap: 56px; }
+    .eyebrow { margin: 0 0 16px; color: var(--warm); font-size: .76rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h1, h2, h3 { line-height: 1.08; letter-spacing: -.04em; }
+    h1 { max-width: 730px; margin: 0; font-size: clamp(2.55rem, 7vw, 5.7rem); }
+    .hero p:not(.eyebrow) { max-width: 690px; margin: 22px 0 0; color: #d7e4df; font-size: clamp(1rem, 1.8vw, 1.25rem); }
+    .hero-art { position: relative; padding: 24px; }
+    .hero-art img { position: relative; z-index: 1; display: block; width: 100%; border: 1px solid rgba(255,255,255,.35); box-shadow: 16px 16px 0 rgba(242, 201, 76, .9); }
+    .hero-art::before { content: "RGB + THERMAL + LiDAR"; position: absolute; z-index: 2; left: 4px; top: 0; color: var(--warm); font-family: "SFMono-Regular", Consolas, monospace; font-size: .7rem; letter-spacing: .11em; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 29px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 17px; border: 1px solid transparent; border-radius: 7px; color: var(--ink); background: white; font-weight: 750; text-decoration: none; }
+    .button:hover { color: var(--ink); background: var(--warm); }
+    .button--quiet { border-color: rgba(255,255,255,.45); color: white; background: transparent; }
+    .button--quiet:hover { border-color: var(--warm); color: var(--ink); }
+
+    main { padding: 24px 0 76px; }
+    section { padding: 72px 0 0; scroll-margin-top: 74px; }
+    .section-label { margin: 0 0 10px; color: var(--accent); font-size: .75rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h2 { max-width: 840px; margin: 0; font-size: clamp(1.9rem, 4vw, 3.25rem); }
+    .section-intro { max-width: 780px; margin: 16px 0 0; color: var(--muted); font-size: 1.05rem; }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: -30px; position: relative; z-index: 2; }
+    .stat { padding: 24px; border: 1px solid var(--line); background: var(--panel); box-shadow: var(--shadow); }
+    .stat strong { display: block; color: var(--accent-dark); font-size: 2.15rem; letter-spacing: -.06em; }
+    .stat span { color: var(--muted); font-size: .92rem; font-weight: 650; }
+
+    .repository-grid, .sensor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; }
+    .repo, .sensor { padding: 23px; border: 1px solid var(--line); background: var(--panel); }
+    .repo--lidar { border-top: 4px solid var(--accent); grid-column: span 2; }
+    .repo h3, .sensor h3 { margin: 0; font-size: 1.14rem; }
+    .repo p, .sensor p { margin: 8px 0 0; color: var(--muted); font-size: .93rem; }
+    .repo a { display: inline-block; margin-top: 14px; font-weight: 800; }
+    .sensor img { display: block; width: 100%; aspect-ratio: 5 / 4; margin-bottom: 15px; object-fit: cover; background: #e9ece8; }
+
+    .callout { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-top: 30px; padding: 23px; border-left: 4px solid var(--warm); background: #fff9e5; }
+    .callout b { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 50%; color: white; background: var(--accent-dark); font-family: Georgia, serif; }
+    .callout p { margin: 0; }
+
+    .calibration-image { display: block; width: 100%; margin: 30px 0; border: 1px solid var(--line); }
+    .matrix-list { display: grid; gap: 16px; }
+    details { border: 1px solid var(--line); background: var(--panel); }
+    summary { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; padding: 21px 23px; cursor: pointer; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--accent); font-size: 1.6rem; font-weight: 400; }
+    details[open] summary { border-bottom: 1px solid var(--line); }
+    details[open] summary::after { content: "−"; }
+    summary strong { display: block; font-size: 1.2rem; letter-spacing: -.02em; }
+    summary span { color: var(--muted); font-family: "SFMono-Regular", Consolas, monospace; font-size: .82rem; }
+    .matrix-content { padding: 23px; }
+    .matrix-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+    .tag { padding: 4px 8px; border-radius: 999px; color: var(--accent-dark); background: #e7f4f1; font-size: .77rem; font-weight: 750; }
+    pre { overflow-x: auto; margin: 0; padding: 18px; color: #ecf7f3; background: var(--code); font-size: .78rem; line-height: 1.58; }
+    .matrix-link { display: inline-block; margin-top: 14px; font-weight: 750; }
+
+    .table-wrap { overflow-x: auto; margin-top: 28px; border: 1px solid var(--line); background: var(--panel); }
+    table { width: 100%; border-collapse: collapse; min-width: 640px; }
+    th, td { padding: 14px 16px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--muted); background: #f0f4f0; font-size: .79rem; letter-spacing: .05em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+
+    .references { display: grid; gap: 12px; margin: 27px 0 0; padding: 0; list-style: none; }
+    .references li { padding: 17px 19px; border-left: 3px solid var(--line); background: var(--panel); }
+    footer { padding: 30px 0 42px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+    @media (max-width: 800px) {
+      .hero { padding: 62px 0; }
+      .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+      .hero-art { max-width: 540px; }
+      .stats, .repository-grid, .sensor-grid { grid-template-columns: 1fr 1fr; }
+      .repo--lidar { grid-column: span 2; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 28px, 1160px); }
+      .nav { padding: 10px 0; align-items: flex-start; gap: 8px; }
+      .brand { flex: 0 0 auto; }
+      .brand > span:last-child { font-size: .85rem; white-space: nowrap; }
+      nav { flex: 1 1 0; gap: 7px 10px; }
+      nav a { font-size: .72rem; }
+      .stats, .repository-grid, .sensor-grid { grid-template-columns: 1fr; }
+      .repo--lidar { grid-column: span 1; }
+      .stat { padding: 19px; }
+      .hero-art { padding: 13px; }
+      pre { padding: 13px; font-size: .7rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="#top"><span class="mark">M3K</span><span>MID-3K</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="#data">Data</a>
+        <a href="#sensors">Sensors</a>
+        <a href="#calibration">Calibration</a>
+        <a href="#summary">Summary</a>
+        <a href="#references">References</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="top" class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">University of Coimbra · ISR</p>
+        <h1>Multimodal data, with calibration made explicit.</h1>
+        <p>MID-3K contains synchronised RGB, thermal, depth, and intensity scene representations, plus the documented transforms needed to work from the original LiDAR point clouds.</p>
+        <div class="actions">
+          <a class="button" href="https://github.com/kennedyk1/MID-3K">View repository</a>
+          <a class="button button--quiet" href="#calibration">View matrices</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="img_files/calib.png" alt="RGB and thermal checkerboard images with LiDAR point projection">
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="wrap">
+      <div class="stats" aria-label="Dataset highlights">
+        <div class="stat"><strong>3,083</strong><span>multimodal scenes</span></div>
+        <div class="stat"><strong>4</strong><span>image modalities per scene</span></div>
+        <div class="stat"><strong>3</strong><span>published sensor-pair calibrations</span></div>
+      </div>
+
+      <section id="data">
+        <p class="section-label">Repository map</p>
+        <h2>Data lives where it is easiest to use.</h2>
+        <p class="section-intro">This repository documents MID-3K. The modality images and original point clouds are deliberately maintained in dedicated repositories; <code>metainfo.csv</code> provides the scene-level metadata.</p>
+        <div class="repository-grid">
+          <article class="repo"><h3>RGB</h3><p>Colour images and YOLO labels.</p><a href="https://github.com/kennedyk1/MID-3K-rgb">Open MID-3K-rgb →</a></article>
+          <article class="repo"><h3>Thermal</h3><p>Thermal images and YOLO labels.</p><a href="https://github.com/kennedyk1/MID-3K-thermal">Open MID-3K-thermal →</a></article>
+          <article class="repo"><h3>Depth</h3><p>LiDAR-derived depth images and labels.</p><a href="https://github.com/kennedyk1/MID-3K-depth">Open MID-3K-depth →</a></article>
+          <article class="repo"><h3>Intensity</h3><p>LiDAR-derived intensity images and labels.</p><a href="https://github.com/kennedyk1/MID-3K-intensity">Open MID-3K-intensity →</a></article>
+          <article class="repo repo--lidar"><h3>Raw LiDAR point clouds</h3><p>Original point clouds are in the <code>pcd/</code> directory of the dedicated repository. Use the COLOR–LiDAR or THERMAL–LiDAR matrix below for projection.</p><a href="https://github.com/kennedyk1/MID-3K-pcd/tree/main/pcd">Open MID-3K-pcd / pcd →</a></article>
+        </div>
+        <div class="callout"><b>i</b><p><strong>Reproducible association.</strong> <a href="https://github.com/kennedyk1/MID-3K/blob/main/metainfo.csv">metainfo.csv</a> records collection time, department, floor, and annotation counts for every scene. Use it when splitting or associating data.</p></div>
+      </section>
+
+      <section id="sensors">
+        <p class="section-label">Sensor suite</p>
+        <h2>One mobile platform, four visual representations.</h2>
+        <p class="section-intro">The data was collected using ROS on a Clearpath Jackal in DEEC and DEI indoor environments at the University of Coimbra. Depth and intensity are dense LiDAR-derived representations projected onto the RGB image plane.</p>
+        <div class="sensor-grid">
+          <article class="sensor"><img src="img_files/r.png" alt="Sample RGB frame"><h3>RGB</h3><p>Ximea MQ013CG-E2 · 640 × 512 · YOLO <code>xywhn</code></p></article>
+          <article class="sensor"><img src="img_files/t.png" alt="Sample thermal frame"><h3>Thermal</h3><p>FLIR Boson 640 LWIR · 640 × 512 · YOLO <code>xywhn</code></p></article>
+          <article class="sensor"><img src="img_files/d.png" alt="Sample depth frame"><h3>Depth</h3><p>Ouster OS1-64-U derived · 640 × 512 · YOLO <code>xywhn</code></p></article>
+          <article class="sensor"><img src="img_files/i.png" alt="Sample intensity frame"><h3>Intensity</h3><p>Ouster OS1-64-U derived · 640 × 512 · YOLO <code>xywhn</code></p></article>
+          <article class="sensor"><img src="img_files/jackal.png" alt="Sensor installation on the Jackal robot"><h3>Mobile platform</h3><p>Clearpath Jackal carrying the RGB camera, thermal camera, and Ouster OS1-64-U LiDAR.</p></article>
+          <article class="sensor"><img src="img_files/calib.png" alt="Calibration target examples"><h3>Calibration target</h3><p>RGB and thermal checkerboard observations, with an example LiDAR-to-RGB point projection.</p></article>
+        </div>
+      </section>
+
+      <section id="calibration">
+        <p class="section-label">Calibration</p>
+        <h2>Use the transform in the direction written.</h2>
+        <p class="section-intro">Each canonical YAML stores only the matrices necessary for projection: intrinsics <code>K</code>, OpenCV distortion vector <code>D = [k1, k2, p1, p2, k3]</code>, and homogeneous extrinsics <code>T</code>. Points are column homogeneous vectors.</p>
+        <img class="calibration-image" src="img_files/calib.png" alt="RGB and thermal calibration boards and LiDAR point projections">
+        <div class="matrix-list">
+          <details open>
+            <summary><span><strong>COLOR camera from LiDAR</strong><span>p_color = T_color_from_lidar × p_lidar_h</span></span></summary>
+            <div class="matrix-content">
+              <div class="matrix-meta"><span class="tag">translation: m</span><span class="tag">target: COLOR camera</span><span class="tag">image: 640 × 512</span></div>
+              <pre><code>K_color =
+[[681.1537743213527,   0.0,               304.2411111909714],
+ [  0.0,             699.3400141294942, 283.30909783571593],
+ [  0.0,               0.0,               1.0]]
+
+D_color = [-0.019676053622695044, 0.007583580084736622,
+           -0.0006813210784568897, -0.0014894295933110943,
+           -0.028837736877494857]
+
+T_color_from_lidar =
+[[-0.020711213611204426, -0.9997756359099763,  0.004441111522331731, -0.026308843328480876],
+ [-0.028370516356301556, -0.0038525674496390216, -0.999590051734071,  -0.24229990018544303],
+ [ 0.999382889303408,    -0.02082871971218364,  -0.028284359683814708, -0.12754424641116704],
+ [ 0.0,                   0.0,                   0.0,                  1.0]]</code></pre>
+              <a class="matrix-link" href="https://github.com/kennedyk1/MID-3K/blob/main/calibration/color_lidar/calibration.yaml">Open canonical YAML →</a>
+            </div>
+          </details>
+
+          <details open>
+            <summary><span><strong>THERMAL camera from LiDAR</strong><span>p_thermal = T_thermal_from_lidar × p_lidar_h</span></span></summary>
+            <div class="matrix-content">
+              <div class="matrix-meta"><span class="tag">translation: m</span><span class="tag">target: THERMAL camera</span><span class="tag">image: 640 × 512</span></div>
+              <pre><code>K_thermal =
+[[707.2820029925454,   0.0,               354.45491526689966],
+ [  0.0,             703.7786568007459, 227.1052281742882],
+ [  0.0,               0.0,               1.0]]
+
+D_thermal = [-0.12429506535239071, 0.7476399506397287,
+             -0.00795472864117167, 0.02219946671789782,
+             -1.1615169504885268]
+
+T_thermal_from_lidar =
+[[-0.07141160958328907, -0.9974028109990063, -0.009381611162468106, -0.08459234939344676],
+ [ 0.020450563863161964, 0.007939566254821173, -0.9997593399040408,   -0.1531295681987805],
+ [ 0.9972372618662031,  -0.07158628289669194,   0.01983047267798277,  -0.08319853666931896],
+ [ 0.0,                  0.0,                    0.0,                   1.0]]</code></pre>
+              <a class="matrix-link" href="https://github.com/kennedyk1/MID-3K/blob/main/calibration/thermal_lidar/calibration.yaml">Open canonical YAML →</a>
+            </div>
+          </details>
+
+          <details open>
+            <summary><span><strong>THERMAL camera from COLOR camera</strong><span>p_thermal = T_thermal_from_color × p_color_h</span></span></summary>
+            <div class="matrix-content">
+              <div class="matrix-meta"><span class="tag">translation: mm</span><span class="tag">source: COLOR camera</span><span class="tag">target: THERMAL camera</span></div>
+              <pre><code>K_color =
+[[694.5767783863788,   0.0,              306.0005310511457],
+ [  0.0,             713.418983871438, 286.06474899454673],
+ [  0.0,               0.0,               1.0]]
+
+D_color = [-0.009937498982803262, -0.004021254951108735,
+            0.000006275579508020951, -0.000992441470247646,
+           -0.04372114079253327]
+
+K_thermal =
+[[707.2820015296844,   0.0,               354.4549139181772],
+ [  0.0,             703.7786553036885, 227.10522697281073],
+ [  0.0,               0.0,               1.0]]
+
+D_thermal = [-0.12429506339571258, 0.7476399197335876,
+             -0.007954728400070676, 0.022199465982827807,
+             -1.1615168961926972]
+
+T_thermal_from_color =
+[[ 0.9983917175807383,  0.011889988456163505, -0.055431096333156286, -13.602106271762803],
+ [-0.009109137461417548, 0.9986999976148243,   0.05015314924168618,   31.499143889039583],
+ [ 0.05595535614123418, -0.049567559337354364, 0.9972021135058056,     0.16229630951639198],
+ [ 0.0,                  0.0,                  0.0,                    1.0]]</code></pre>
+              <a class="matrix-link" href="https://github.com/kennedyk1/MID-3K/blob/main/calibration/color_thermal/calibration.yaml">Open canonical YAML →</a>
+            </div>
+          </details>
+        </div>
+        <div class="callout"><b>!</b><p><strong>Pair-specific intrinsics.</strong> The COLOR and THERMAL intrinsics in the stereo result were estimated with that stereo calibration. Keep each <code>K</code>, <code>D</code>, and <code>T</code> within the same calibration block.</p></div>
+      </section>
+
+      <section id="summary">
+        <p class="section-label">Dataset summary</p>
+        <h2>3,083 scenes across four modalities.</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>RGB</th><th>Thermal</th><th>Depth</th><th>Intensity</th></tr></thead>
+            <tbody>
+              <tr><td>Images</td><td>3,083</td><td>3,083</td><td>3,083</td><td>3,083</td></tr>
+              <tr><td>Annotation files</td><td>3,083</td><td>3,083</td><td>3,083</td><td>3,083</td></tr>
+              <tr><td>Person annotations</td><td>10,824</td><td>10,881</td><td>10,824¹</td><td>10,824¹</td></tr>
+              <tr><td>Approx. repository size</td><td>1.3 GB</td><td>1.3 GB</td><td>977 MB</td><td>1.7 GB</td></tr>
+              <tr><td>Annotation format</td><td>YOLO xywhn</td><td>YOLO xywhn</td><td>YOLO xywhn</td><td>YOLO xywhn</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="section-intro">¹ LiDAR-derived modalities use the RGB labels because the LiDAR is calibrated to the RGB camera. A small temporal misalignment may be present due to hardware limitations.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Day</th><th>Date</th><th>Images</th><th>Thermal annotations</th><th>RGB annotations</th><th>Split</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>29-Apr</td><td>368</td><td>1,368</td><td>1,404</td><td>Test</td></tr>
+              <tr><td>2</td><td>07-May</td><td>332</td><td>1,075</td><td>1,072</td><td>Train</td></tr>
+              <tr><td>3</td><td>08-May</td><td>337</td><td>1,658</td><td>1,651</td><td>Test</td></tr>
+              <tr><td>4</td><td>09-May</td><td>1,333</td><td>4,199</td><td>4,125</td><td>Train</td></tr>
+              <tr><td>5</td><td>16-May</td><td>713</td><td>2,581</td><td>2,572</td><td>Train</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="references">
+        <p class="section-label">References</p>
+        <h2>Research using MID-3K.</h2>
+        <ul class="references">
+          <li>Sousa, E., Mota, K. O., Gomes, I. P., Garrote, L., Wolf, D. F., &amp; Premebida, C. (2023). <strong>Late-Fusion Multimodal Human Detection Based on RGB and Thermal Images for Robotic Perception</strong>. <em>2023 European Conference on Mobile Robots (ECMR)</em>, 1–6.</li>
+          <li>Kennedy O. S. Mota, Luís Garrote, Cristiano Premebida. <strong>Multimodal Human Detection using RGB, Thermal and LiDAR modalities for Robotic Perception</strong>. <em>2024 IEEE 20th International Conference on Automation Science and Engineering (CASE)</em>, Bari, Italy.</li>
+          <li>Kennedy O. S. Mota, Diogo S. de Oliveira, Luís Garrote, Cristiano Premebida. <strong>Multimodal Human Detection Using YOLO and Representation Learning for Robot Perception</strong>. <em>Seventh Iberian Robotics Conference (ROBOT 2024)</em>. <a href="https://github.com/kennedyk1/MID-3K/blob/main/Multimodal%20Human%20Detection%20Using%20YOLO%20and%20Representation%20Learning%20for%20Robot%20Perception.pdf">Preview document</a>.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>MID-3K · Multimodal ISR Dataset</span><span><a href="https://github.com/kennedyk1/MID-3K/blob/main/README.md">Technical README</a> · <a href="https://github.com/kennedyk1/MID-3K">GitHub repository</a></span></div>
+  </footer>
+</body>
+</html>
