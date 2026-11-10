@@ -139,8 +139,13 @@ T_thermal_from_color =
 
 | Metric | RGB | Thermal | Depth | Intensity | LiDAR point clouds |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Data files | 3,083 | 3,083 | 3,083 | 3,083 | 3,083 |
+| Images / point clouds | 3,083 | 3,083 | 3,083 | 3,083 | 3,083 |
+| Annotation files | 3,083 | 3,083 | 3,083 | 3,083 | — |
+| Person annotations | 10,824 | 10,881 | 10,824¹ | 10,824¹ | — |
 | Approx. repository size | 1.3 GB | 1.3 GB | 977 MB | 1.7 GB | 6.5 GB |
+| Annotation format | YOLO `xywhn` | YOLO `xywhn` | YOLO `xywhn` | YOLO `xywhn` | — |
+
+¹ The LiDAR-derived modality labels use the RGB labels. The raw LiDAR repository contains point clouds; 2D annotation files and a YOLO annotation format do not apply to it.
 
 <p align="center">
   <img src="img_files/r.png" alt="RGB sample" width="24%">
