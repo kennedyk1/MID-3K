@@ -16,11 +16,17 @@ The modality data and raw point clouds are maintained in dedicated repositories:
 | Intensity | [MID-3K-intensity](https://github.com/kennedyk1/MID-3K-intensity) | LiDAR-derived intensity images and labels |
 | Raw LiDAR point clouds | [MID-3K-pcd / `pcd/`](https://github.com/kennedyk1/MID-3K-pcd/tree/main/pcd) | Source point clouds for projection and derived modalities |
 
-To obtain the raw point clouds:
+Clone the individual repositories you need:
 
 ```bash
+git clone https://github.com/kennedyk1/MID-3K-rgb.git
+git clone https://github.com/kennedyk1/MID-3K-thermal.git
+git clone https://github.com/kennedyk1/MID-3K-depth.git
+git clone https://github.com/kennedyk1/MID-3K-intensity.git
 git clone https://github.com/kennedyk1/MID-3K-pcd.git
 ```
+
+The first four repositories provide modality images and labels. `MID-3K-pcd` provides the raw LiDAR point clouds in `pcd/`.
 
 `metainfo.csv` records the collection time, department, floor, and RGB/thermal annotation counts for every scene. Use it to make reproducible dataset splits and to associate modalities.
 

@@ -83,6 +83,10 @@
     .repo h3, .sensor h3 { margin: 0; font-size: 1.14rem; }
     .repo p, .sensor p { margin: 8px 0 0; color: var(--muted); font-size: .93rem; }
     .repo a { display: inline-block; margin-top: 14px; font-weight: 800; }
+    .clone-panel { margin-top: 16px; padding: 23px; border: 1px solid var(--line); background: var(--panel); }
+    .clone-panel h3 { margin: 0; font-size: 1.1rem; }
+    .clone-panel p { margin: 12px 0 0; color: var(--muted); font-size: .92rem; }
+    .clone-panel pre { margin-top: 15px; }
     .sensor img { display: block; width: 100%; aspect-ratio: 5 / 4; margin-bottom: 15px; object-fit: cover; background: #e9ece8; }
 
     .callout { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-top: 30px; padding: 23px; border-left: 4px solid var(--warm); background: #fff9e5; }
@@ -187,6 +191,15 @@
           <article class="repo"><h3>Depth</h3><p>LiDAR-derived depth images and labels.</p><a href="https://github.com/kennedyk1/MID-3K-depth">Open MID-3K-depth →</a></article>
           <article class="repo"><h3>Intensity</h3><p>LiDAR-derived intensity images and labels.</p><a href="https://github.com/kennedyk1/MID-3K-intensity">Open MID-3K-intensity →</a></article>
           <article class="repo repo--lidar"><h3>Raw LiDAR point clouds</h3><p>Original point clouds are in the <code>pcd/</code> directory of the dedicated repository. Use the COLOR–LiDAR or THERMAL–LiDAR matrix below for projection.</p><a href="https://github.com/kennedyk1/MID-3K-pcd/tree/main/pcd">Open MID-3K-pcd / pcd →</a></article>
+        </div>
+        <div class="clone-panel">
+          <h3>Clone the repositories you need</h3>
+          <pre><code>git clone https://github.com/kennedyk1/MID-3K-rgb.git
+git clone https://github.com/kennedyk1/MID-3K-thermal.git
+git clone https://github.com/kennedyk1/MID-3K-depth.git
+git clone https://github.com/kennedyk1/MID-3K-intensity.git
+git clone https://github.com/kennedyk1/MID-3K-pcd.git</code></pre>
+          <p>The first four repositories provide modality images and labels. <code>MID-3K-pcd</code> provides the raw point clouds in <code>pcd/</code>.</p>
         </div>
         <div class="callout"><b>i</b><p><strong>Reproducible association.</strong> <a href="https://github.com/kennedyk1/MID-3K/blob/main/metainfo.csv">metainfo.csv</a> records collection time, department, floor, and annotation counts for every scene. Use it when splitting or associating data.</p></div>
       </section>
