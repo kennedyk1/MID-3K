@@ -10,4 +10,8 @@ Each directory contains the single canonical YAML for one sensor pair:
 
 `K` is the 3x3 camera-intrinsic matrix. `D` contains OpenCV radial-tangential distortion coefficients in `[k1, k2, p1, p2, k3]` order. `T_*_from_*` is a 4x4 homogeneous transform; its translation column uses the `translation_unit` stated in that file.
 
+## LiDAR point clouds
+
+The LiDAR point-cloud files are maintained separately in [kennedyk1/MID-3K-pcd](https://github.com/kennedyk1/MID-3K-pcd), under the [`pcd/` directory](https://github.com/kennedyk1/MID-3K-pcd/tree/main/pcd). They are not duplicated in this repository. Use them with `color_lidar/calibration.yaml` or `thermal_lidar/calibration.yaml`, according to the transform direction shown above.
+
 The folder intentionally excludes calibration input names, images, per-sample errors, rejection logs, and generated-result duplicates.
