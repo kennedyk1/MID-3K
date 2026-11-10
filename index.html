@@ -45,7 +45,8 @@
     }
     .nav { min-height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
     .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 800; text-decoration: none; letter-spacing: -.03em; }
-    .mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: white; font-size: .8rem; }
+    .mark { display: grid; place-items: center; width: 34px; height: 34px; overflow: hidden; border: 1px solid var(--accent-dark); border-radius: 8px; background: var(--accent); }
+    .mark img { display: block; width: 100%; height: 100%; object-fit: cover; }
     nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 18px; }
     nav a { color: var(--muted); font-size: .9rem; font-weight: 650; text-decoration: none; }
     nav a:hover { color: var(--accent-dark); }
@@ -145,7 +146,7 @@
 <body>
   <header class="site-header">
     <div class="wrap nav">
-      <a class="brand" href="#top"><span class="mark">M3K</span><span>MID-3K</span></a>
+      <a class="brand" href="#top"><span class="mark"><img src="img_files/jackal.png" alt="Clearpath Jackal sensor platform"></span><span>MID-3K</span></a>
       <nav aria-label="Primary navigation">
         <a href="#data">Data</a>
         <a href="#sensors">Sensors</a>
