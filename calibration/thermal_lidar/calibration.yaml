@@ -1,0 +1,24 @@
+# THERMAL camera and LiDAR calibration
+# p_thermal = T_thermal_from_lidar * p_lidar_h
+format_version: 1
+source_frame: lidar
+target_frame: thermal_camera
+
+camera_intrinsics:
+  image_size_px: [640, 512] # [width, height]
+  camera_model: pinhole
+  distortion_model: opencv_radial_tangential
+  K:
+    - [707.2820029925454, 0.0, 354.45491526689966]
+    - [0.0, 703.7786568007459, 227.1052281742882]
+    - [0.0, 0.0, 1.0]
+  # OpenCV order: [k1, k2, p1, p2, k3]
+  D: [-0.12429506535239071, 0.7476399506397287, -0.00795472864117167, 0.02219946671789782, -1.1615169504885268]
+
+extrinsics:
+  translation_unit: m
+  T_thermal_from_lidar:
+    - [-0.07141160958328907, -0.9974028109990063, -0.009381611162468106, -0.08459234939344676]
+    - [0.020450563863161964, 0.007939566254821173, -0.9997593399040408, -0.1531295681987805]
+    - [0.9972372618662031, -0.07158628289669194, 0.01983047267798277, -0.08319853666931896]
+    - [0.0, 0.0, 0.0, 1.0]

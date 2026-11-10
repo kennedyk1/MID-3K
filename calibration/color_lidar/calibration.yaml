@@ -1,0 +1,24 @@
+# COLOR camera and LiDAR calibration
+# p_color = T_color_from_lidar * p_lidar_h
+format_version: 1
+source_frame: lidar
+target_frame: color_camera
+
+camera_intrinsics:
+  image_size_px: [640, 512] # [width, height]
+  camera_model: pinhole
+  distortion_model: opencv_radial_tangential
+  K:
+    - [681.1537743213527, 0.0, 304.2411111909714]
+    - [0.0, 699.3400141294942, 283.30909783571593]
+    - [0.0, 0.0, 1.0]
+  # OpenCV order: [k1, k2, p1, p2, k3]
+  D: [-0.019676053622695044, 0.007583580084736622, -0.0006813210784568897, -0.0014894295933110943, -0.028837736877494857]
+
+extrinsics:
+  translation_unit: m
+  T_color_from_lidar:
+    - [-0.020711213611204426, -0.9997756359099763, 0.004441111522331731, -0.026308843328480876]
+    - [-0.028370516356301556, -0.0038525674496390216, -0.999590051734071, -0.24229990018544303]
+    - [0.999382889303408, -0.02082871971218364, -0.028284359683814708, -0.12754424641116704]
+    - [0.0, 0.0, 0.0, 1.0]

@@ -1,0 +1,35 @@
+# COLOR-to-THERMAL stereo calibration
+# p_thermal = T_thermal_from_color * p_color_h
+format_version: 1
+source_frame: color_camera
+target_frame: thermal_camera
+
+source_camera_intrinsics:
+  image_size_px: [640, 512] # [width, height]
+  camera_model: pinhole
+  distortion_model: opencv_radial_tangential
+  K:
+    - [694.5767783863788, 0.0, 306.0005310511457]
+    - [0.0, 713.418983871438, 286.06474899454673]
+    - [0.0, 0.0, 1.0]
+  # OpenCV order: [k1, k2, p1, p2, k3]
+  D: [-0.009937498982803262, -0.004021254951108735, 0.000006275579508020951, -0.000992441470247646, -0.04372114079253327]
+
+target_camera_intrinsics:
+  image_size_px: [640, 512] # [width, height]
+  camera_model: pinhole
+  distortion_model: opencv_radial_tangential
+  K:
+    - [707.2820015296844, 0.0, 354.4549139181772]
+    - [0.0, 703.7786553036885, 227.10522697281073]
+    - [0.0, 0.0, 1.0]
+  # OpenCV order: [k1, k2, p1, p2, k3]
+  D: [-0.12429506339571258, 0.7476399197335876, -0.007954728400070676, 0.022199465982827807, -1.1615168961926972]
+
+extrinsics:
+  translation_unit: mm
+  T_thermal_from_color:
+    - [0.9983917175807383, 0.011889988456163505, -0.055431096333156286, -13.602106271762803]
+    - [-0.009109137461417548, 0.9986999976148243, 0.05015314924168618, 31.499143889039583]
+    - [0.05595535614123418, -0.049567559337354364, 0.9972021135058056, 0.16229630951639198]
+    - [0.0, 0.0, 0.0, 1.0]
